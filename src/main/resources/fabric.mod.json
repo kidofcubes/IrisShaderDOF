@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "irisshaderdof",
+  "version": "${version}",
+  "name": "IrisShaderDOF",
+  "description": "overrides the centerDepthSmooth variable in iris for adjustable dof",
+  "authors": [
+    "KidOfCubes"
+  ],
+  "contact": {
+    "repo": "https://github.com/kidofcubes/IrisShaderDOF"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/irisshaderdof/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.kidofcubes.irisshaderdof.client.IrisShaderDOFClient"
+    ],
+    "main": [
+      "io.github.kidofcubes.irisshaderdof.IrisShaderDOF"
+    ]
+  },
+  "mixins": [
+    "IrisShaderDOF.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.17",
+    "fabric": "*",
+    "minecraft": "1.19.*",
+    "fabric-key-binding-api-v1": "*",
+    "iris": "1.5.2.*"
+  }
+}
