@@ -148,5 +148,14 @@ public class IrisShaderDOFClient implements ClientModInitializer {
                 MinecraftClient.getInstance().world.setTimeOfDay(TimeHolderThing.getTime());
             }
         });
+
+
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            DepthHolderThing.sinceLast++;
+            if(DepthHolderThing.sinceLast>=20){
+                DepthHolderThing.hasBeenUpdated=true;
+                DepthHolderThing.sinceLast=0;
+            }
+        });
     }
 }

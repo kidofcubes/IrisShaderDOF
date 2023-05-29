@@ -49,7 +49,7 @@ public abstract class IrisDepthMixin {
             IrisRenderSystem.texParameteri(getAltTexture(), GL_TEXTURE_2D, GL21C.GL_TEXTURE_WRAP_S, GL21C.GL_CLAMP_TO_EDGE);
             IrisRenderSystem.texParameteri(getAltTexture(), GL_TEXTURE_2D, GL21C.GL_TEXTURE_WRAP_T, GL21C.GL_CLAMP_TO_EDGE);
 //            setHasFirstSample(false); //??
-            System.out.println("updated dof");
+//            System.out.println("updated dof");
             hasBeenUpdated=true;
         }
         if(manualDOF||locked){
