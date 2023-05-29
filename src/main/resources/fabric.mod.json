@@ -29,6 +29,6 @@
     "fabric": "*",
     "minecraft": "1.19.*",
     "fabric-key-binding-api-v1": "*",
-    "iris": "1.5.2.*"
+    "iris": "1.*"
   }
 }
