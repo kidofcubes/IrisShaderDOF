@@ -5,26 +5,17 @@ import io.github.kidofcubes.irisshaderdof.TimeHolderThing;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
 public class IrisShaderDOFClient implements ClientModInitializer {
     /**
      * Runs the mod initializer on the client environment.
      */
-
-    private static KeyBinding plusBinding;
-    private static KeyBinding minusBinding;
-    private static KeyBinding bigPlusBinding;
-    private static KeyBinding bigMinusBinding;
-    private static KeyBinding smallPlusBinding;
-    private static KeyBinding smallMinusBinding;
-    private static KeyBinding toggleBinding;
-    private static KeyBinding toggleLock;
 
     private static KeyBinding dofToggleLock;
     private static KeyBinding dofToggleOverride;
@@ -114,6 +105,7 @@ public class IrisShaderDOFClient implements ClientModInitializer {
             while (timeToggle.wasPressed()&&client.player!=null) {
                 TimeHolderThing.forceTime = !TimeHolderThing.forceTime;
                 client.player.sendMessage(Text.literal("Toggled TIME override to "+TimeHolderThing.forceTime), true);
+
             }
         });
 
@@ -141,24 +133,18 @@ public class IrisShaderDOFClient implements ClientModInitializer {
                 }
             }
         });
-
-        ClientTickEvents.START_WORLD_TICK.register(client -> {
-            if(TimeHolderThing.forceTime&&MinecraftClient.getInstance().world!=null) {
-                MinecraftClient.getInstance().world.setTimeOfDay(TimeHolderThing.getTime());
-            }
-        });
-        ClientTickEvents.END_WORLD_TICK.register(client -> {
-            if(TimeHolderThing.forceTime&&MinecraftClient.getInstance().world!=null) {
-                MinecraftClient.getInstance().world.setTimeOfDay(TimeHolderThing.getTime());
-            }
-        });
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if(TimeHolderThing.forceTime&&MinecraftClient.getInstance().world!=null) {
-                MinecraftClient.getInstance().world.setTimeOfDay(TimeHolderThing.getTime());
+            if(TimeHolderThing.forceTime&&client.world!=null) {
+                client.world.setTimeOfDay(TimeHolderThing.getTime());
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if(TimeHolderThing.forceTime&&MinecraftClient.getInstance().world!=null) {
+            if(TimeHolderThing.forceTime&&client.world!=null) {
+                client.world.setTimeOfDay(TimeHolderThing.getTime());
+            }
+        });
+        WorldRenderEvents.START.register(thing -> {
+            if(TimeHolderThing.forceTime&& MinecraftClient.getInstance().world!=null) {
                 MinecraftClient.getInstance().world.setTimeOfDay(TimeHolderThing.getTime());
             }
         });
