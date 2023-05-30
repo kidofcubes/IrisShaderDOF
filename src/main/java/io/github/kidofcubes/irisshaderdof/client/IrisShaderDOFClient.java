@@ -91,12 +91,14 @@ public class IrisShaderDOFClient implements ClientModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (dofToggleLock.wasPressed()&&client.player!=null) {
                 DepthHolderThing.locked=!DepthHolderThing.locked;
+                DepthHolderThing.hasBeenUpdated=false;
                 client.player.sendMessage(Text.literal("Toggled DOF lock to "+DepthHolderThing.locked), true);
             }
         });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (dofToggleOverride.wasPressed()&&client.player!=null) {
                 DepthHolderThing.manualDOF=!DepthHolderThing.manualDOF;
+                DepthHolderThing.hasBeenUpdated=false;
                 client.player.sendMessage(Text.literal("Toggled DOF override to "+DepthHolderThing.manualDOF), true);
             }
         });
@@ -113,6 +115,7 @@ public class IrisShaderDOFClient implements ClientModInitializer {
             while (add.wasPressed()&&client.player!=null) {
                 if(DepthHolderThing.manualDOF) {
                     DepthHolderThing.setDepthValue(DepthHolderThing.getDepthValue() + (getMult()*1));
+                    DepthHolderThing.hasBeenUpdated=false;
                     client.player.sendMessage(Text.literal("Changed depth value to " + DepthHolderThing.getDepthValue()), true);
                 }
                 if(TimeHolderThing.forceTime) {
@@ -125,6 +128,7 @@ public class IrisShaderDOFClient implements ClientModInitializer {
             while (minus.wasPressed()&&client.player!=null) {
                 if(DepthHolderThing.manualDOF) {
                     DepthHolderThing.setDepthValue(DepthHolderThing.getDepthValue() + (getMult()*-1));
+                    DepthHolderThing.hasBeenUpdated=false;
                     client.player.sendMessage(Text.literal("Changed depth value to " + DepthHolderThing.getDepthValue()), true);
                 }
                 if(TimeHolderThing.forceTime) {
@@ -150,10 +154,10 @@ public class IrisShaderDOFClient implements ClientModInitializer {
         });
 
 
-        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+        ClientTickEvents.START_CLIENT_TICK.register(client -> { //keep locked dof after shader reload or whatever removes the value in the gpu for some reason
             DepthHolderThing.sinceLast++;
             if(DepthHolderThing.sinceLast>=20){
-                DepthHolderThing.hasBeenUpdated=true;
+                if(!DepthHolderThing.manualDOF&&DepthHolderThing.locked) DepthHolderThing.hasBeenUpdated=false;
                 DepthHolderThing.sinceLast=0;
             }
         });

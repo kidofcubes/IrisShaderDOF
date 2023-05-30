@@ -8,6 +8,7 @@ public class DepthHolderThing {
     public static boolean locked = false;
     public static boolean hasBeenUpdated = false;
     public static int sinceLast = 0;
+    public static float lockedDepthValue = 10.0f;
 
     private static float depthValue = 10.0f;
     public static float getDepthValue(){
